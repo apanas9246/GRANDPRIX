@@ -15,7 +15,7 @@ import cv2 as cv
 import numpy as np
 from enum import Enum, IntEnum
 
-sys.path.insert(0, "/library")
+sys.path.insert(0, "./library")
 import racecar_core
 import racecar_utils as rc_utils
 
