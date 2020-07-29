@@ -12,14 +12,14 @@ class Colors(Enum):
 BLUR_KERNEL_SIZE = 5
 
 # Car Max Speed
-MAX_SPEED = 0.25
+MAX_SPEED = 1
 
 # Colors that exist in lane/line following
 LANE_COLORS = (Colors.PURPLE, Colors.ORANGE)
 LINE_COLORS = (Colors.GREEN, Colors.RED, Colors.BLUE)
 
 # Distance to detect AR tag to switch state
-CONTOUR_DETECT_RANGE = 100
+CONTOUR_DETECT_RANGE = 200
 
 # Tag IDS
 ID_LINE = 0
@@ -27,3 +27,9 @@ ID_LANE = 1
 ID_SLALOM = 2
 ID_WALL = 3
 ID_DIRECTION = 199
+
+# Crop floor size for contour line
+CROP_FLOOR = ((480*3//5, 0), (480, 640)) # 480 = camera height, 640 = camera width
+
+#Minimum contour area for largest contour function
+MIN_CONTOUR_AREA = 1000
