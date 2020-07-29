@@ -36,7 +36,7 @@ rc = racecar_core.create_racecar()
 
 class Main:
 
-    def __init__(self):
+    def __init__(self, manual_mode=False):
         # Phase by value
         self.cur_id = c.ID_WALL
 
@@ -46,18 +46,14 @@ class Main:
         self.__color_image = None
         self.__lidar_scan = None
 
+        self.__manual_mode = manual_mode
+
     def update_images(self):
         self.__depth_image = cv.GaussianBlur((rc.camera.get_depth_image() - 0.01) % 10000, (c.BLUR_KERNEL_SIZE, c.BLUR_KERNEL_SIZE), 0) 
         self.__color_image = rc.camera.get_color_image()
         self.__lidar_scan = rc.lidar.get_samples()
 
-    def run_main(self):
-        # Gets images and lidar scan
-        self.update_images()
-
-        # Calls current state
-        self.cur_phase.run_phase(rc, self.__depth_image, self.__color_image, self.__lidar_scan)
-
+    def run_manual(self):
         # Gets speed using triggers
         rt = rc.controller.get_trigger(rc.controller.Trigger.RIGHT)
         lt = rc.controller.get_trigger(rc.controller.Trigger.LEFT)
@@ -68,6 +64,17 @@ class Main:
 
         # Sets speed and angle
         rc.drive.set_speed_angle(rc_utils.clamp(speed, -1, 1), rc_utils.clamp(angle, -1, 1))
+
+    def run_main(self):
+        # Gets images and lidar scan
+        self.update_images()
+        
+        # Checks if manual mode was enabled
+        if self.__manual_mode:
+            self.run_manual()
+        else:
+            # Calls current state
+            self.cur_phase.run_phase(rc, self.__depth_image, self.__color_image, self.__lidar_scan)
 
         # >>>> State changes
         # Finds ID of the AR tag within range
@@ -113,7 +120,7 @@ def ar_in_range_color(RANGE, d_img, c_img, colors):
         if rc_utils.get_pixel_average_distance(depth_image, (x, y))<RANGE:
             contours = [rc_utils.find_contours(ar_image, color.value[0], color.value[1]) for color in colors]
             largest_contours = [(idx, rc_utils.get_largest_contour(cont, 2000)) for idx, cont in enumerate(contours)]
-            
+
             if len(largest_contours):
                 return colors[max(largest_contours, key=lambda x: get_cont_area_proofed(x[1]))[0]]
             
