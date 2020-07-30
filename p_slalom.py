@@ -92,7 +92,7 @@ class P_Slalom:
             self.run_approach_state(rc)
         elif self.__cur_state == self.State.PASS:
             print("Pass")
-            self.run_pass_state()
+            self.run_pass_state(rc)
         elif self.__cur_state == self.State.TURN:
             print("Turn")
             self.run_turn_state(rc)
@@ -215,10 +215,12 @@ class P_Slalom:
             """DEBUG: Show image"""
             #rc.display.show_color_image(self.__color_image)
             
-    def run_pass_state(self):
-        if 60 < self.__closest_lidar_sample[0] < 300:
+    def run_pass_state(self, rc):
+        if 40 < self.__closest_lidar_sample[0] < 320:
             self.__is_stamped = False
             self.__cur_state = self.State.TURN
+        else:
+            rc.drive.set_speed_angle(0.6, 0)
 
     def run_turn_state(self, rc):
         # >>> State Switch Detection
@@ -234,7 +236,7 @@ class P_Slalom:
         # >>> Turn to find cone
         # ---------------------
         else:
-            speed = 1
+            speed = 0.5
         
             # If blue cone needs to be found next, turn left. Otherwise right
             angle = -1 if self.__cur_col == self.Color.BLUE else 1
