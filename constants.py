@@ -3,7 +3,7 @@ from enum import Enum
 class Colors(Enum):
     # Color Thresholds
     PURPLE = ((117, 50, 50),(155, 255, 255))
-    ORANGE = ((10, 100, 100), (20, 255, 255))
+    ORANGE = ((15, 50, 50), (30, 255, 255))
     GREEN = ((35, 200, 200),(75, 255, 255))
     RED = ((170, 100, 100), (10, 255, 255))
     BLUE = ((90, 200, 200), (120, 255, 255))
@@ -29,7 +29,35 @@ ID_WALL = 3
 ID_DIRECTION = 199
 
 # Crop floor size for contour line
-CROP_FLOOR = ((480*3//5, 0), (480, 640)) # 480 = camera height, 640 = camera width
+LINE_CROP_FLOOR = ((480*3//5, 0), (480, 640)) # 480 = camera height, 640 = camera width
 
-#Minimum contour area for largest contour function
-MIN_CONTOUR_AREA = 1000
+#Minimum contour area for largest contour function for line following
+LINE_MIN_CONTOUR_AREA = 1000
+
+""">>>>> Lane Follow"""
+# When line following, how far away from the lane AR tag should priority be changed to prevent a crash
+PRIORITY_SWITCH_DIST = 415
+
+# When to do a sharp turn at the intersection
+TURN_DECISION_DIST = 157
+
+# When in fast state, dist from the slow contour needed to switch to slow state
+STATE_SWITCH_DIST = 50
+
+LANE_MIN_CONTOUR_AREA = 100
+
+ALIGN_REMAP = (-200, 200, -1, 1)
+SLOWDOWN_REMAP = (250, 30, 0.5, 0.1)
+SPEED_ANGLE_REMAP = (1, 0, 0.1, 1)
+
+DIR_NONE = 0
+DIR_RIGHT = 1
+DIR_LEFT = -1
+
+TAG_ID_COLOR = 1
+TAG_ID_TURN = 199
+
+SPEED_SLOW = 0.5
+
+# Detects if there is a fork in the road so the car is told to turn
+LANE_SPLIT_DETECT_MAX_OFFSET = 50

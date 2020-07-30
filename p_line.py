@@ -18,11 +18,11 @@ class P_Line:
             self.contour_center = None
         else:
             # Crop the image to the floor directly in front of the car
-            contour_image = rc_utils.crop(color_image, c.CROP_FLOOR[0], c.CROP_FLOOR[1])
+            contour_image = rc_utils.crop(color_image, c.LINE_CROP_FLOOR[0], c.LINE_CROP_FLOOR[1])
 
             contours = rc_utils.find_contours(contour_image, self.color.value[0], self.color.value[1])
             
-            L_contour = rc_utils.get_largest_contour(contours, c.MIN_CONTOUR_AREA)
+            L_contour = rc_utils.get_largest_contour(contours, c.LINE_MIN_CONTOUR_AREA)
 
             if L_contour is not None:
 
