@@ -122,7 +122,7 @@ class P_Lane:
         elif len(largest) == 1:
             # If the center of the contour is roughly in the center of the screen, tell car to turn
             offset = abs(rc_utils.get_contour_center(largest[0][1])[1] - (rc.camera.get_width() // 2)) 
-            print("offset", offset)
+
             if offset < c.LANE_SPLIT_DETECT_MAX_OFFSET:
                 self.angle = 1
 
@@ -175,9 +175,6 @@ class P_Lane:
             if out == 0:
                 self.cur_state = self.State.FAST
                 self.slow_state_angle = 0
-        
-        
-        print(self.cur_state) 
             
         # If slow line area sum is big enough, align to right side of fast lane:
         

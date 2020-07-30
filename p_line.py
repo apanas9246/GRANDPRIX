@@ -34,11 +34,8 @@ class P_Line:
                 # Draw contour onto the image
                 rc_utils.draw_contour(contour_image, L_contour, (0, 255, 255))
                 rc_utils.draw_circle(contour_image, self.contour_center, (0, 255, 255))
-
-            rc.display.show_color_image(color_image)
             
     def run_phase(self, rc, depth_image, color_image, lidar_scan):
-        print(">> Running Line Following", self.color.name)
         global prev_angle
         self.updateContour(rc, depth_image, color_image)
 

@@ -31,8 +31,6 @@ class P_Wall:
 
 
         #print(">> Running Wall Following")
-        if self.is_canyon:
-            print("THIS IS ALSO A CANYON")
             
         """
         After start() is run, this function is run every frame until the back button
@@ -82,7 +80,6 @@ class P_Wall:
         AAAAAAAAAH_WE_ARE_ABOUT_TO_FALL____BETTER_STOP_NOW = 100
 
         if self.ar_tag and self.ledge_count==0 and diff > 50 :
-            print("ledge")
             if right_farthest > AAAAAAAAAH_WE_ARE_ABOUT_TO_FALL____BETTER_STOP_NOW:
                 self.many+=1
                 self.ledge_angle = -1

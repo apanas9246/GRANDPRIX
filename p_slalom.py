@@ -79,7 +79,6 @@ class P_Slalom:
 
 
     def run_phase(self, rc, depth_image, color_image, lidar_scan):
-        print(">> Running Cone Slaloming")
         self.update_images(rc)
         self.update_contours(rc)
         self.auto_control(rc)
@@ -88,13 +87,10 @@ class P_Slalom:
 #run a function based on state
     def auto_control(self, rc):
         if self.__cur_state == self.State.APPROACH:
-            print("Approach")
             self.run_approach_state(rc)
         elif self.__cur_state == self.State.PASS:
-            print("Pass")
             self.run_pass_state(rc)
         elif self.__cur_state == self.State.TURN:
-            print("Turn")
             self.run_turn_state(rc)
         else:
             rc.drive.set_speed_angle(0, 0)

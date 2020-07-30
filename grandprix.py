@@ -110,8 +110,6 @@ class Main:
                 self.cur_id = detected_ID
                 rc.drive.stop()
 
-                print("STATE SWITCHED")
-
 
 MAIN = None
 
@@ -156,9 +154,6 @@ def start():
     rc.drive.set_max_speed(c.MAX_SPEED)
 
     MAIN = Main()
-
-    # Print start message
-    print(">> GRAND PRIX")
 
 
 def update():
