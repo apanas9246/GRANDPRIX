@@ -65,7 +65,7 @@ class P_Line:
 
         else: #change this to a finding function or reverse function
 
-            speed = -1
+            speed = 1
             angle = 0
 
         rc.drive.set_speed_angle(speed, angle)

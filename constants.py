@@ -12,7 +12,7 @@ class Colors(Enum):
 BLUR_KERNEL_SIZE = 5
 
 # Car Max Speed
-MAX_SPEED = 1
+MAX_SPEED = 0.7
 
 # Colors that exist in lane/line following
 LANE_COLORS = (Colors.PURPLE, Colors.ORANGE)

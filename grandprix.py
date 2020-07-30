@@ -98,6 +98,7 @@ class Main:
 
             # Sets the current ID to the detected ID
             self.cur_id = detected_ID
+            rc.drive.stop()
 
             print("STATE SWITCHED")
 
