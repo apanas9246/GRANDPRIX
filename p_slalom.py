@@ -216,7 +216,7 @@ class P_Slalom:
             #rc.display.show_color_image(self.__color_image)
             
     def run_pass_state(self, rc):
-        if 40 < self.__closest_lidar_sample[0] < 320:
+        if 60 < self.__closest_lidar_sample[0] < 300:
             self.__is_stamped = False
             self.__cur_state = self.State.TURN
         else:
