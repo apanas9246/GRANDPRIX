@@ -30,14 +30,14 @@ class P_Line:
                 contour_area = rc_utils.get_contour_area(L_contour)
  
                 # Draw contour onto the image
-                #rc_utils.draw_contour(contour_image, L_contour, (0, 255, 255))
-                #rc_utils.draw_circle(contour_image, self.contour_center, (0, 255, 255))
+                rc_utils.draw_contour(contour_image, L_contour, (0, 255, 255))
+                rc_utils.draw_circle(contour_image, self.contour_center, (0, 255, 255))
 
-            #rc.display.show_color_image(color_image)
+            rc.display.show_color_image(color_image)
             
     def run_phase(self, rc, depth_image, color_image, lidar_scan):
         print(">> Running Line Following", self.color.name)
-
+        global prev_angle
         self.updateContour(rc, depth_image, color_image)
 
         """ 
@@ -51,22 +51,29 @@ class P_Line:
         # make a reverse function and a finding function. Also a speed function.
         if self.contour_center:
 
-            angle = rc_utils.remap_range(self.contour_center[1], 0, rc.camera.get_width(), -1, 1)
-            goal_amount = rc_utils.remap_range(abs(angle), 0, 1, 0, 500) 
+            angle1 = rc_utils.remap_range(self.contour_center[1], 0, rc.camera.get_width(), -1, 1)
+            goal_amount = rc_utils.remap_range(abs(angle1), 0, 1, 0, 80) 
+            prev_angle = angle1
+            if angle1 > 0 :
+                angle1 = rc_utils.remap_range(self.contour_center[1]-goal_amount, 0, rc.camera.get_width(), -1, 1)
+                angle = rc_utils.clamp(angle1, -1, 1)
+                prev_angle = angle
+            elif angle1<0:
+                angle1 = rc_utils.remap_range(self.contour_center[1]+goal_amount, 0, rc.camera.get_width(), -1, 1)
+                angle = rc_utils.clamp(angle1, -1, 1)
+                prev_angle = angle
+            else:
+                if angle1 == 0:
+                    angle = 0
+                if angle1 is None:
+                    angle = prev_angle
 
-            if angle > 0 :
-                angle = rc_utils.remap_range(self.contour_center[1]+goal_amount, 0, rc.camera.get_width(), -1, 1)
-                angle = rc_utils.clamp(angle, -1, 1)
-            elif angle<0:
-                angle = rc_utils.remap_range(self.contour_center[1]-goal_amount, 0, rc.camera.get_width(), -1, 1)
-                angle = rc_utils.clamp(angle, -1, 1)
-                
-            speed = rc_utils.remap_range(abs(angle), 0, 1, 1, 0.1)  #desmos speed angle functions angle plug in for x
-
+            speed = rc_utils.remap_range(abs(angle1), 0, 1, 1, 0.3)  #desmos speed angle functions angle plug in for x
+    
         else: #change this to a finding function or reverse function
-
             speed = 1
-            angle = 0
+            angle =0
+
 
         rc.drive.set_speed_angle(speed, angle)
 
