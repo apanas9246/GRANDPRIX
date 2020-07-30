@@ -40,7 +40,7 @@ class Main:
         # Phase by value
         self.cur_id = c.ID_WALL
 
-        self.cur_phase = p_wall.P_Wall()
+        self.cur_phase = p_wall.P_Wall(self.cur_id)
 
         self.__depth_image = None
         self.__color_image = None

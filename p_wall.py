@@ -42,7 +42,7 @@ class P_Wall:
         rightDist =  rc_utils.get_lidar_average_distance(scan, 44, 10)
         leftDist = rc_utils.get_lidar_average_distance(scan, 316, 10)
 
-        angle = rc_utils.remap_range(rightDist - leftDist, -rc.camera.get_width()//13, rc.camera.get_width()//13, -1, 1)
+        angle = rc_utils.remap_range(rightDist - leftDist, -rc.camera.get_width()//9, rc.camera.get_width()//9, -1, 1)
         angle = rc_utils.clamp(angle, -1, 1)
 
 
