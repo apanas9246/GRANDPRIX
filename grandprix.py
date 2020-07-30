@@ -2,7 +2,6 @@
 Copyright MIT and Harvey Mudd College
 MIT License
 Summer 2020
-
 Lab GRAND PRIX
 """
 
@@ -51,7 +50,7 @@ class Main:
     def update_images(self):
         self.__depth_image = cv.GaussianBlur((rc.camera.get_depth_image() - 0.01) % 10000, (c.BLUR_KERNEL_SIZE, c.BLUR_KERNEL_SIZE), 0) 
         self.__color_image = rc.camera.get_color_image()
-        self.__lidar_scan = rc.lidar.get_samples()
+        self.__lidar_scan = (rc.lidar.get_samples()-0.01)%10000
 
     def run_manual(self):
         # Gets speed using triggers

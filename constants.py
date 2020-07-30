@@ -68,19 +68,21 @@ SPEED_SLOW = 0.5
 LANE_SPLIT_DETECT_MAX_OFFSET = 50
 
 
-def ar_in_range_ID(RANGE, d_img, c_img, rc):
+def ar_in_range_ID(RANGE, d_img, c_img, rc, bottom= 0.5):
     #gets depth and ar tags, if there are some, finds center and then compares depth with 
     # RANGE. If within range, prints ids
     depth_image = d_img
     ar_image = c_img
 
-    ar_image = rc_utils.crop(ar_image, (0,0), (rc.camera.get_height()//2, rc.camera.get_width()))
+    ar_image = rc_utils.crop(ar_image, (0,0), (int(rc.camera.get_height()*bottom), rc.camera.get_width()))
     checking_info, checking_info_id = rc_utils.get_ar_markers(ar_image)
 
     if checking_info:
         x =  (int)( (checking_info[0][0][0][1] + checking_info[0][0][1][1]) //2)
         y =  (int)( (checking_info[0][0][0][0] + checking_info[0][0][1][0]) //2)
-
-        if rc_utils.get_pixel_average_distance(depth_image, (x, y))<RANGE:
+        dis = rc_utils.get_pixel_average_distance(depth_image, (x, y))
+        #print("this is dis     ",   dis)
+        if dis<RANGE:
+            
             return (checking_info_id)
     return None

@@ -192,4 +192,3 @@ class P_Lane:
         speed = rt - lt
         angle = rc.controller.get_joystick(rc.controller.Joystick.LEFT)[0]
         rc.drive.set_speed_angle(rc_utils.clamp(speed, -1, 1), rc_utils.clamp(angle, -1, 1))"""
-
