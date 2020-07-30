@@ -17,12 +17,15 @@ class P_Wall:
         standard = 0
         tooclose = 1
     
-    def __init__(self):
+    def __init__(self, prev_id):
         self.cur_state = self.State.standard
+
+        self.is_canyon = prev_id == 1
 
     def run_phase(self, rc, depth_image, color_image, lidar_scan):
         print(">> Running Wall Following")
-
+        if self.is_canyon:
+            print("THIS IS ALSO A CANYON")
             
         """
         After start() is run, this function is run every frame until the back button

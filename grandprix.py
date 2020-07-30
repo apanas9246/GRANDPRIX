@@ -94,7 +94,7 @@ class Main:
                 self.cur_phase = p_slalom.P_Slalom()
 
             elif detected_ID == c.ID_WALL:
-                self.cur_phase = p_wall.P_Wall()
+                self.cur_phase = p_wall.P_Wall(self.cur_id)
 
             # Sets the current ID to the detected ID
             self.cur_id = detected_ID

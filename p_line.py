@@ -7,6 +7,8 @@ import constants as c
 sys.path.insert(0, "./library")
 import racecar_utils as rc_utils
 
+max_line = 0.86
+
 class P_Line:
     def __init__(self, color):
         self.color = color
@@ -50,7 +52,6 @@ class P_Line:
         # Notes: I think that I've tweaked the car to work consistently. Still need to
         # make a reverse function and a finding function. Also a speed function.
         if self.contour_center:
-            max_line = 0.86
             angle1 = rc_utils.remap_range(self.contour_center[1], 0, rc.camera.get_width(), -1, 1)
             goal_amount = rc_utils.remap_range(abs(angle1), 0, 1, 0, 70) 
             prev_angle = angle1

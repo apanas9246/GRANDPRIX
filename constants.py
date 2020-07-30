@@ -12,11 +12,11 @@ class Colors(Enum):
 BLUR_KERNEL_SIZE = 5
 
 # Car Max Speed
-MAX_SPEED = 0.7
+MAX_SPEED = 0.5
 
 # Colors that exist in lane/line following
 LANE_COLORS = (Colors.PURPLE, Colors.ORANGE)
-LINE_COLORS = (Colors.GREEN, Colors.RED, Colors.BLUE)
+LINE_COLORS = (Colors.RED, Colors.GREEN, Colors.BLUE)
 
 # Distance to detect AR tag to switch state
 CONTOUR_DETECT_RANGE = 200
