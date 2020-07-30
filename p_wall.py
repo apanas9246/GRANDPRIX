@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 import sys
 from enum import Enum, IntEnum
+import constants as c
 
 sys.path.insert(0, "./library")
 import racecar_utils as rc_utils
@@ -23,6 +24,9 @@ class P_Wall:
         self.is_canyon = prev_id == 1
 
     def run_phase(self, rc, depth_image, color_image, lidar_scan):
+        
+
+
         print(">> Running Wall Following")
         if self.is_canyon:
             print("THIS IS ALSO A CANYON")
@@ -39,11 +43,34 @@ class P_Wall:
         # Calculate the distance 
         scan = lidar_scan
 
+        max_wall = 0.65 #testing max speed
+        hall = rc.camera.get_width()//9
+        optimum = 60 
+
         rightDist =  rc_utils.get_lidar_average_distance(scan, 44, 10)
         leftDist = rc_utils.get_lidar_average_distance(scan, 316, 10)
 
-        angle = rc_utils.remap_range(rightDist - leftDist, -rc.camera.get_width()//9, rc.camera.get_width()//9, -1, 1)
+
+        angle = rc_utils.remap_range(rightDist - leftDist, -hall, hall, -1, 1)
         angle = rc_utils.clamp(angle, -1, 1)
 
+  
+    
 
-        rc.drive.set_speed_angle(1, angle)
+        # get them tags
+        corners, ids = rc_utils.get_ar_markers(color_image)
+
+        if c.ar_in_range_ID(c.CONTOUR_DETECT_RANGE, depth_image, color_image, rc) == c.ID_DIRECTION:
+            dirrrrrrrrr = rc_utils.get_ar_directions(corners[0])
+            if dirrrrrrrrr == rc_utils.Direction.LEFT:
+                angle = -1
+            elif dirrrrrrrrr == rc_utils.Direction.RIGHT:
+                angle = 1
+        else:
+            tooClose = 80
+            if rc_utils.get_depth_image_center_distance(depth_image) < tooClose:
+                angle = 1
+
+
+        speed = rc_utils.remap_range(abs(angle), 15, 1, 1, 0.5)#temp controls
+        rc.drive.set_speed_angle(max_wall*speed, angle)

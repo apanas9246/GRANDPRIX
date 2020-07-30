@@ -82,9 +82,9 @@ class P_Lane:
             self.angle = self.slow_state_angle
 
             # Draws VIZHUALS
-            cv.line(self.cropped_img, top_pt, bott_pt, (255, 255, 0), thickness=2)
+            #cv.line(self.cropped_img, top_pt, bott_pt, (255, 255, 0), thickness=2)
 
-        rc.display.show_color_image(self.cropped_img)
+        #rc.display.show_color_image(self.cropped_img)
 
         # Sets speed and angle
         rc.drive.set_speed_angle(rc_utils.clamp(speed, -1, 1), rc_utils.clamp(self.angle, -1, 1))
@@ -133,7 +133,7 @@ class P_Lane:
 
         # Checks ramp if y accel is below a threshold
         if rc.physics.get_linear_acceleration()[1] >= -9.59:
-            speed = 0.1
+            speed = 1
 
         # Sets speed and angle
         rc.drive.set_speed_angle(rc_utils.clamp(speed, -1, 1), rc_utils.clamp(self.angle, -1, 1))

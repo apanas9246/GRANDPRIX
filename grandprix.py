@@ -78,29 +78,40 @@ class Main:
 
         # >>>> State changes
         # Finds ID of the AR tag within range
-        detected_ID = ar_in_range_ID(c.CONTOUR_DETECT_RANGE, self.__depth_image, self.__color_image)
+        detected_ID = c.ar_in_range_ID(c.CONTOUR_DETECT_RANGE, self.__depth_image, self.__color_image, rc)
 
         if detected_ID is not None and not detected_ID == self.cur_id:
-            # Creates class instance based on the detectedID
+            # If set to false, state will not be switched (incase color was not detected properly)
+            successful = True
+
             if detected_ID == c.ID_LANE:
                 color = ar_in_range_color(c.CONTOUR_DETECT_RANGE, self.__depth_image, self.__color_image, c.LANE_COLORS)
-                self.cur_phase = p_lane.P_Lane(color)
-
             elif detected_ID == c.ID_LINE:
                 color = ar_in_range_color(c.CONTOUR_DETECT_RANGE, self.__depth_image, self.__color_image, c.LINE_COLORS)
-                self.cur_phase = p_line.P_Line(color)
+            else:
+                color = "Grand Pricks"
+            if color is None:
+                successful = False
 
-            elif detected_ID == c.ID_SLALOM:
-                self.cur_phase = p_slalom.P_Slalom()
+            if successful:
+                # Creates class instance based on the detectedID
+                if detected_ID == c.ID_LANE:
+                    self.cur_phase = p_lane.P_Lane(color)
 
-            elif detected_ID == c.ID_WALL:
-                self.cur_phase = p_wall.P_Wall(self.cur_id)
+                elif detected_ID == c.ID_LINE:
+                    self.cur_phase = p_line.P_Line(color)
 
-            # Sets the current ID to the detected ID
-            self.cur_id = detected_ID
-            rc.drive.stop()
+                elif detected_ID == c.ID_SLALOM:
+                    self.cur_phase = p_slalom.P_Slalom()
 
-            print("STATE SWITCHED")
+                elif detected_ID == c.ID_WALL:
+                    self.cur_phase = p_wall.P_Wall(self.cur_id)
+
+                # Sets the current ID to the detected ID
+                self.cur_id = detected_ID
+                rc.drive.stop()
+
+                print("STATE SWITCHED")
 
 
 MAIN = None
@@ -123,31 +134,17 @@ def ar_in_range_color(RANGE, d_img, c_img, colors):
             largest_contours = [(idx, rc_utils.get_largest_contour(cont, 2000)) for idx, cont in enumerate(contours)]
 
             if len(largest_contours):
-                return colors[max(largest_contours, key=lambda x: get_cont_area_proofed(x[1]))[0]]
+                if len([cont for idx, cont in largest_contours if cont is not None]):
+                    return colors[max(largest_contours, key=lambda x: get_cont_area_proofed(x[1]))[0]]
+                else:
+                    return None
             
 def get_cont_area_proofed(contour):
     if contour is None or not len(contour):
         return 0
     else:
         return rc_utils.get_contour_area(contour)
-        
 
-def ar_in_range_ID(RANGE, d_img, c_img):
-    #gets depth and ar tags, if there are some, finds center and then compares depth with 
-    # RANGE. If within range, prints ids
-    depth_image = d_img
-    ar_image = c_img
-
-    ar_image = rc_utils.crop(ar_image, (0,0), (rc.camera.get_height()//2, rc.camera.get_width()))
-    checking_info, checking_info_id = rc_utils.get_ar_markers(ar_image)
-
-    if checking_info:
-        x =  (int)( (checking_info[0][0][0][1] + checking_info[0][0][1][1]) //2)
-        y =  (int)( (checking_info[0][0][0][0] + checking_info[0][0][1][0]) //2)
-
-        if rc_utils.get_pixel_average_distance(depth_image, (x, y))<RANGE:
-            return (checking_info_id)
-    return None
 
 def start():
     global MAIN

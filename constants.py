@@ -1,10 +1,15 @@
+import sys
+import cv2 as cv
+import numpy as np
+sys.path.insert(0, "./library")
+import racecar_utils as rc_utils
 from enum import Enum
 
 class Colors(Enum):
     # Color Thresholds
     PURPLE = ((117, 50, 50),(155, 255, 255))
     ORANGE = ((15, 50, 50), (30, 255, 255))
-    GREEN = ((35, 200, 200),(75, 255, 255))
+    GREEN = ((35, 100, 100),(75, 255, 255))
     RED = ((165, 50, 50), (14, 255, 255))
     BLUE = ((90, 200, 200), (120, 255, 255))
 
@@ -61,3 +66,21 @@ SPEED_SLOW = 0.5
 
 # Detects if there is a fork in the road so the car is told to turn
 LANE_SPLIT_DETECT_MAX_OFFSET = 50
+
+
+def ar_in_range_ID(RANGE, d_img, c_img, rc):
+    #gets depth and ar tags, if there are some, finds center and then compares depth with 
+    # RANGE. If within range, prints ids
+    depth_image = d_img
+    ar_image = c_img
+
+    ar_image = rc_utils.crop(ar_image, (0,0), (rc.camera.get_height()//2, rc.camera.get_width()))
+    checking_info, checking_info_id = rc_utils.get_ar_markers(ar_image)
+
+    if checking_info:
+        x =  (int)( (checking_info[0][0][0][1] + checking_info[0][0][1][1]) //2)
+        y =  (int)( (checking_info[0][0][0][0] + checking_info[0][0][1][0]) //2)
+
+        if rc_utils.get_pixel_average_distance(depth_image, (x, y))<RANGE:
+            return (checking_info_id)
+    return None

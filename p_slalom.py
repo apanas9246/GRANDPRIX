@@ -128,7 +128,7 @@ class P_Slalom:
             self.__contour = None
         
         # Displays image
-        rc.display.show_color_image(self.__color_image)
+        #rc.display.show_color_image(self.__color_image)
 
 
     # Gets speed based on the cone being approached
@@ -210,7 +210,7 @@ class P_Slalom:
             #self.__approach_speed = 1
 
             # Sets speed angle
-            rc.drive.set_speed_angle(self.__approach_speed, self.__approach_angle)
+            rc.drive.set_speed_angle(.5*self.__approach_speed, self.__approach_angle)
 
             """DEBUG: Show image"""
             #rc.display.show_color_image(self.__color_image)
@@ -220,7 +220,7 @@ class P_Slalom:
             self.__is_stamped = False
             self.__cur_state = self.State.TURN
         else:
-            rc.drive.set_speed_angle(0.6, 0)
+            rc.drive.set_speed_angle(0.3, 0)
 
     def run_turn_state(self, rc):
         # >>> State Switch Detection
@@ -242,7 +242,7 @@ class P_Slalom:
             angle = -1 if self.__cur_col == self.Color.BLUE else 1
 
             # Turns until cone is found
-            rc.drive.set_speed_angle(speed, angle)
+            rc.drive.set_speed_angle(0.5*speed, angle)
 
 
     @staticmethod
